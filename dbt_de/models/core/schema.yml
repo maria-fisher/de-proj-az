@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: co2
+    description: >
+         List of unique sensor reading co2 event_id. 
+         Includes locations of stations where the sensors were placed 
+               
+  - name: rh
+    description: 
+         List of unique sensor reading relative humidity event_id. 
+         Includes locations of stations where the sensors were placed 
+        
+  - name: temperature
+    description: 
+         List of unique sensor reading temperarature event_id. 
+         Includes locations of stations where the sensors were placed 
+    
+  - name: wa
+    description: 
+         List of unique sensor reading water activity event_id. 
+         Includes locations of stations where the sensors were placed 
+      
+    columns:
+      - name: event_id
+        description: Event unique id
+        data_type: int64      
+      
+      - name: season
+        data_type: string
+        description: "Season is an important factor because of environmental change the risk of contamination will vary"
+        
+
+      - name: timestamp
+        data_type: timestamp
+        description: "Time and date for every sensor reading recorded"  
+        
+
+      - name: station
+        data_type: string
+        description: "Sensors were allocated in 4 stations "
+
+      - name: co2_min
+        data_type: float
+        description: "Carbon Dioxide is an important environmental data to analyse risk of mycotoxin formation"
+        
+
+      - name: co2_max
+        data_type: float
+        description: "Carbon Dioxide is an important environmental data to analyse risk of mycotoxin formation"
+        tests:
+          - not_null
+          
+      - name: rh_min
+        data_type: float
+        description: "Relative humidity is an important environmental data to analyse risk of mycotoxin formation"
+        
+
+      - name: rh_max
+        data_type: float
+        description: "Relative humidity is an important environmental data to analyse risk of mycotoxin formation"
+        
+     
+      - name: temperature_min
+        data_type: float
+        description: "Temperature is an important environmental data to analyse risk of mycotoxin formation"
+       
+
+      - name: temperature_max
+        data_type: float
+        description: "Temperature is an important environmental data to analyse risk of mycotoxin formation"
+       
+    
+      - name: wa_min
+        data_type: float
+        description: "Water activity is an important environmental data to analyse risk of mycotoxin formation"
+        
+
+      - name: wa_max
+        data_type: float
+        description: "Water activity is an important environmental data to analyse risk of mycotoxin formation"
+        tests:
+          - not_null

@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: sensor
+    schema: sensor
+    description: This is the environmental sensors synthetic database loaded into bronze
+    tables:
+      - name: co2
+      - name: rh
+      - name: temperature
+      - name: wa
