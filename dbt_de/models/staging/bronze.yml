@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: sensor
     schema: sensor
-    description: This is the environmental sensors synthetic database loaded into bronze
+    description: The environmental sensors synthetic dataset will be loaded into bronze layer
     tables:
       - name: co2
       - name: rh
