@@ -1,4 +1,4 @@
-# To work on data processing in dbt
+# Data processing in dbt and Databricks
 
 #### The following tasks were performed:
 1. Create a new project in dbt for data transformation,
