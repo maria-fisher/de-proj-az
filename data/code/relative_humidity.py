@@ -24,20 +24,16 @@ def generate_data(start_date, end_date):
         season = get_season(month)
         for station in stations:
             if season == "Winter":
-                temperature = random.uniform(-5, 5)  # Adjust temperature range for winter
                 humidity = random.uniform(60, 80)  # Adjust humidity range for winter
             elif season == "Spring":
-                temperature = random.uniform(5, 20)  # Adjust temperature range for spring
                 humidity = random.uniform(50, 70)  # Adjust humidity range for spring
             elif season == "Summer":
-                temperature = random.uniform(20, 35)  # Adjust temperature range for summer
                 humidity = random.uniform(40, 60)  # Adjust humidity range for summer
             else:  # Fall
-                temperature = random.uniform(10, 25)  # Adjust temperature range for fall
                 humidity = random.uniform(50, 70)  # Adjust humidity range for fall
             
             # Append data
-            data.append([current_date, station, temperature, humidity, month])
+            data.append([current_date, station, humidity, month])
         
         current_date += timedelta(hours=1)
     
@@ -56,7 +52,7 @@ end_date = datetime(2023, 12, 31, 23)
 data = generate_data(start_date, end_date)
 
 # Create DataFrame
-df = pd.DataFrame(data, columns=["Timestamp", "Station", "Temperature (°C)", "Relative Humidity (%)", "Month"])
+df = pd.DataFrame(data, columns=["Timestamp", "Station", "Relative Humidity (%)", "Month"])
 
 # Add food type
 food_types = []
@@ -72,4 +68,3 @@ df.insert(0, "Event ID", range(1, 1 + len(df)))
 
 # Save to CSV
 df.to_csv("food_storage_humidity.csv", index=False)
-
