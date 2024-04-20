@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import random
 from datetime import datetime, timedelta
 
@@ -18,6 +19,7 @@ def generate_data(start_date, end_date):
     data = []
     current_date = start_date
     while current_date <= end_date:
+        hour = current_date.hour
         month = current_date.month
         season = get_season(month)
         for station in stations:
@@ -40,6 +42,7 @@ def generate_data(start_date, end_date):
 # Define stations and corresponding food
 stations = ["Station A", "Station B", "Station C", "Station D", "Station E",
             "Station F", "Station G", "Station H", "Station I", "Station J"]
+foods = ["Fresh Vegetables", "Dried Food", "Drinks", "Dairy", "Meat", "Seafood", "Canned Goods"]
 
 # Generate data
 start_date = datetime(2023, 1, 1)
@@ -51,8 +54,17 @@ data = generate_data(start_date, end_date)
 # Create DataFrame
 df = pd.DataFrame(data, columns=["Timestamp", "Station", "CO2 (ppm)", "Month"])
 
+# Add food type
+food_types = []
+for _ in range(len(df)):
+    if random.random() < 0.7:  # 70% chance of dried food or drinks
+        food_types.append(random.choice(["Dried Food", "Drinks"]))
+    else:
+        food_types.append(random.choice(["Fresh Vegetables", "Dairy", "Meat", "Seafood", "Canned Goods"]))
+df["Food Type"] = food_types
+
 # Add event_id
 df.insert(0, "Event ID", range(1, 1 + len(df)))
 
 # Save to CSV
-df.to_csv("food_storage_co2_levels.csv", index=False)
+df.to_csv("food_storage_co2.csv", index=False)
