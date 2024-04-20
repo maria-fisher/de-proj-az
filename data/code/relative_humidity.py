@@ -1,63 +1,75 @@
+import pandas as pd
+import numpy as np
 import random
-import csv
 from datetime import datetime, timedelta
 
-# Function to generate random environmental sensor data for relative humidity
-def generate_humidity_data(timestamp, station):
-    # Simulate sensor failure with 10% probability
-    if random.random() < 0.1:
-        humidity_min = 0
-        humidity_max = 0
-    else:
-        # Generate random humidity data within reasonable ranges
-        humidity_min = round(random.uniform(0, 100), 2)
-        humidity_max = round(random.uniform(humidity_min, 100), 2)
-    
-    return [timestamp, station, humidity_min, humidity_max]
-# Function to determine season based on month
+# Function to generate seasonal variation
 def get_season(month):
-    if 3 <= month <= 5:
-        return "Spring"
-    elif 6 <= month <= 8:
-        return "Summer"
-    elif 9 <= month <= 11:
-        return "Autumn"
-    else:
+    if month in [12, 1, 2]:  # Winter
         return "Winter"
+    elif month in [3, 4, 5]:  # Spring
+        return "Spring"
+    elif month in [6, 7, 8]:  # Summer
+        return "Summer"
+    else:  # Fall
+        return "Fall"
 
-
-# Function to generate data for relative humidity for a given month
-def generate_month_humidity_data(year, month):
-    start_date = datetime(year, month, 1)
-    end_date = datetime(year, month + 1, 1) if month < 12 else datetime(year + 1, 1, 1) - timedelta(seconds=1)
-    current_date = start_date
+# Function to generate environmental data
+def generate_data(start_date, end_date):
     data = []
-    while current_date < end_date:
+    current_date = start_date
+    while current_date <= end_date:
+        hour = current_date.hour
+        month = current_date.month
+        season = get_season(month)
         for station in stations:
-            season = get_season(current_date.month)
-            timestamp = current_date.strftime("%Y-%m-%d %H:%M:%S")
-            humidity_data = generate_humidity_data(timestamp, station)
-            data.append([season] + humidity_data)
-            current_date += timedelta(minutes=1)
+            if season == "Winter":
+                temperature = random.uniform(-5, 5)  # Adjust temperature range for winter
+                humidity = random.uniform(60, 80)  # Adjust humidity range for winter
+            elif season == "Spring":
+                temperature = random.uniform(5, 20)  # Adjust temperature range for spring
+                humidity = random.uniform(50, 70)  # Adjust humidity range for spring
+            elif season == "Summer":
+                temperature = random.uniform(20, 35)  # Adjust temperature range for summer
+                humidity = random.uniform(40, 60)  # Adjust humidity range for summer
+            else:  # Fall
+                temperature = random.uniform(10, 25)  # Adjust temperature range for fall
+                humidity = random.uniform(50, 70)  # Adjust humidity range for fall
+            
+            # Append data
+            data.append([current_date, station, temperature, humidity, month])
+        
+        current_date += timedelta(hours=1)
+    
     return data
 
-# Define stations
-stations = ["Station A", "Station B", "Station C", "Station D"]
+# Define stations and corresponding food
+stations = ["Station A", "Station B", "Station C", "Station D", "Station E",
+            "Station F", "Station G", "Station H", "Station I", "Station J"]
+foods = ["Fresh Vegetables", "Dried Food", "Drinks", "Dairy", "Meat", "Seafood", "Canned Goods"]
 
-# Generate data for relative humidity for each month in 2023
-humidity_data = []
-for month in range(1, 13):
-    humidity_data += generate_month_humidity_data(2023, month)
+# Generate data
+start_date = datetime(2023, 1, 1)
+end_date = datetime(2023, 12, 31, 23)
 
-# Add event_id as the first column
-event_id = 1
-for row in humidity_data:
-    row.insert(0, event_id)
-    event_id += 1
+# Generate data for the entire year
+data = generate_data(start_date, end_date)
 
-# Save relative humidity data to CSV file
-with open("humidity_data.csv", "w", newline="") as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(["event_id", "season", "timestamp", "station", "humidity_min", "humidity_max"])
-    writer.writerows(humidity_data)
+# Create DataFrame
+df = pd.DataFrame(data, columns=["Timestamp", "Station", "Temperature (°C)", "Relative Humidity (%)", "Month"])
+
+# Add food type
+food_types = []
+for _ in range(len(df)):
+    if random.random() < 0.7:  # 70% chance of dried food or drinks
+        food_types.append(random.choice(["Dried Food", "Drinks"]))
+    else:
+        food_types.append(random.choice(["Fresh Vegetables", "Dairy", "Meat", "Seafood", "Canned Goods"]))
+df["Food Type"] = food_types
+
+# Add event_id
+df.insert(0, "Event ID", range(1, 1 + len(df)))
+
+# Save to CSV
+df.to_csv("food_storage_humidity.csv", index=False)
 
