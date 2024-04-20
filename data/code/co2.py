@@ -1,63 +1,58 @@
+import pandas as pd
 import random
-import csv
 from datetime import datetime, timedelta
 
-# Function to generate random environmental sensor data for CO2 levels
-def generate_co2_data(timestamp, station):
-    # Simulate sensor failure with 10% probability
-    if random.random() < 0.1:
-        co2_min = 0
-        co2_max = 0
-    else:
-        # Generate random CO2 data within reasonable ranges
-        co2_min = round(random.uniform(300, 1500), 2)
-        co2_max = round(random.uniform(co2_min, 2000), 2)
-    
-    return [timestamp, station, co2_min, co2_max]
-
-# Function to determine season based on month
+# Function to generate seasonal variation
 def get_season(month):
-    if 3 <= month <= 5:
-        return "Spring"
-    elif 6 <= month <= 8:
-        return "Summer"
-    elif 9 <= month <= 11:
-        return "Autumn"
-    else:
+    if month in [12, 1, 2]:  # Winter
         return "Winter"
+    elif month in [3, 4, 5]:  # Spring
+        return "Spring"
+    elif month in [6, 7, 8]:  # Summer
+        return "Summer"
+    else:  # Fall
+        return "Fall"
 
-# Function to generate data for CO2 levels for a given month
-def generate_month_co2_data(year, month):
-    start_date = datetime(year, month, 1)
-    end_date = datetime(year, month + 1, 1) if month < 12 else datetime(year + 1, 1, 1) - timedelta(seconds=1)
-    current_date = start_date
+# Function to generate environmental data
+def generate_data(start_date, end_date):
     data = []
-    while current_date < end_date:
+    current_date = start_date
+    while current_date <= end_date:
+        month = current_date.month
+        season = get_season(month)
         for station in stations:
-            season = get_season(current_date.month)
-            timestamp = current_date.strftime("%Y-%m-%d %H:%M:%S")
-            co2_data = generate_co2_data(timestamp, station)
-            data.append([season] + co2_data)
-            current_date += timedelta(minutes=1)
+            if season == "Winter":
+                co2 = random.uniform(300, 500)  # Adjust CO2 range for winter
+            elif season == "Spring":
+                co2 = random.uniform(400, 600)  # Adjust CO2 range for spring
+            elif season == "Summer":
+                co2 = random.uniform(300, 500)  # Adjust CO2 range for summer
+            else:  # Fall
+                co2 = random.uniform(400, 600)  # Adjust CO2 range for fall
+            
+            # Append data
+            data.append([current_date, station, co2, month])
+        
+        current_date += timedelta(hours=1)
+    
     return data
 
-# Define stations
-stations = ["Station A", "Station B", "Station C", "Station D"]
+# Define stations and corresponding food
+stations = ["Station A", "Station B", "Station C", "Station D", "Station E",
+            "Station F", "Station G", "Station H", "Station I", "Station J"]
 
-# Generate data for CO2 levels for each month in 2023
-co2_data = []
-for month in range(1, 13):
-    co2_data += generate_month_co2_data(2023, month)
+# Generate data
+start_date = datetime(2023, 1, 1)
+end_date = datetime(2023, 12, 31, 23)
 
-# Add event_id as the first column
-event_id = 1
-for row in co2_data:
-    row.insert(0, event_id)
-    event_id += 1
+# Generate data for the entire year
+data = generate_data(start_date, end_date)
 
+# Create DataFrame
+df = pd.DataFrame(data, columns=["Timestamp", "Station", "CO2 (ppm)", "Month"])
 
-# Save CO2 data to CSV file
-with open("co2_data.csv", "w", newline="") as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(["event_id", "season", "timestamp", "station", "co2_min", "co2_max"])
-    writer.writerows(co2_data)
+# Add event_id
+df.insert(0, "Event ID", range(1, 1 + len(df)))
+
+# Save to CSV
+df.to_csv("food_storage_co2_levels.csv", index=False)
