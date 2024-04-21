@@ -1,83 +1,44 @@
-version: 2
+ 
+
+  version: 2
 
 models:
-  - name: co2
+  - name: fact_table
     description: >
-         List of unique sensor reading co2 event_id. 
-         Includes locations of stations where the sensors were placed 
-               
-  - name: rh
-    description: 
-         List of unique sensor reading relative humidity event_id. 
-         Includes locations of stations where the sensors were placed 
-        
-  - name: temperature
-    description: 
-         List of unique sensor reading temperarature event_id. 
-         Includes locations of stations where the sensors were placed 
-    
-  - name: wa
-    description: 
-         List of unique sensor reading water activity event_id. 
-         Includes locations of stations where the sensors were placed 
-      
+         Combined data from sensors, food, and station snapshots.
+         Includes sensor readings, food quantities and prices, and station information.
+         
     columns:
       - name: event_id
         description: Event unique id
         data_type: int64      
-      
-      - name: season
-        data_type: string
-        description: "Season is an important factor because of environmental change the risk of contamination will vary"
-        
-
-      - name: timestamp
-        data_type: timestamp
-        description: "Time and date for every sensor reading recorded"  
-        
-
+      - name: temp
+        data_type: float
+        description: "Temperature recorded by sensors"
+      - name: rh
+        data_type: float
+        description: "Relative humidity recorded by sensors"
+      - name: co2
+        data_type: float
+        description: "Carbon Dioxide recorded by sensors"
+      - name: wa
+        data_type: float
+        description: "Water activity recorded by sensors"
       - name: station
         data_type: string
-        description: "Sensors were allocated in 4 stations "
-
-      - name: co2_min
+        description: "Location of the sensor station"
+      - name: datetime
+        data_type: timestamp
+        description: "Timestamp of the sensor reading"
+      - name: quantity
         data_type: float
-        description: "Carbon Dioxide is an important environmental data to analyse risk of mycotoxin formation"
-        
-
-      - name: co2_max
+        description: "Quantity of food stored at the station"
+      - name: price_unity
         data_type: float
-        description: "Carbon Dioxide is an important environmental data to analyse risk of mycotoxin formation"
-        tests:
-          - not_null
-          
-      - name: rh_min
+        description: "Price per unit of food"
+      - name: price_total
         data_type: float
-        description: "Relative humidity is an important environmental data to analyse risk of mycotoxin formation"
-        
-
-      - name: rh_max
-        data_type: float
-        description: "Relative humidity is an important environmental data to analyse risk of mycotoxin formation"
-        
-     
-      - name: temperature_min
-        data_type: float
-        description: "Temperature is an important environmental data to analyse risk of mycotoxin formation"
-       
-
-      - name: temperature_max
-        data_type: float
-        description: "Temperature is an important environmental data to analyse risk of mycotoxin formation"
-       
-    
-      - name: wa_min
-        data_type: float
-        description: "Water activity is an important environmental data to analyse risk of mycotoxin formation"
-        
-
-      - name: wa_max
-        data_type: float
-        description: "Water activity is an important environmental data to analyse risk of mycotoxin formation"
-        tests:
-          - not_null
+        description: "Total price of food"
+      - name: station_food_type
+        data_type: string
+        description: "Type of food stored at the station"
