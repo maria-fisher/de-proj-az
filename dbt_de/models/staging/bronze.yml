@@ -1,11 +1,11 @@
 version: 2
 
 sources:
-  - name: sensor
-    schema: sensor
-    description: The environmental sensors synthetic dataset will be loaded into bronze layer
+  - name: storage
+    schema: storage
+    description: This are the synthetic datasets that are been loaded into bronze
     tables:
-      - name: co2
-      - name: rh
-      - name: temperature
-      - name: wa
+      - name: food
+      - name: sensors
+      - name: station
+      
