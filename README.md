@@ -34,7 +34,11 @@ The bronze layer served as the raw data storage, the silver layer as the cleaned
 The infrastructure needed for the project was created with Terraform. 
 
 ### Data orchestration
-For data orchestration, I used Azure Data Fabric, because it is possible to automate and schedule the movement of data between different layers of the architecture.
+For data orchestration, I used Azure Data Factory, because it is possible to automate and schedule the movement of data between different layers of the architecture.
+
+![de-proj-az35](https://github.com/maria-fisher/de-proj-az/assets/33252792/bf729c4e-38c3-441d-82c3-5af1f4d29ccf)
+
+
 
 ### Data transformation
 For data transformation, I employed dbt-databricks python library, a combination of dbt (data build tool) and Databricks, a unified analytics platform.
