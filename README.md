@@ -48,5 +48,8 @@ This transformation process involved cleaning, aggregating, and structuring the 
 # Dashboard 
 in progress ... 
 
+![de-proj-az1](https://github.com/maria-fisher/de-proj-az/assets/33252792/5b68e64a-58e6-4b3c-bf2e-f83c4b737d96)
+
+
 # Documentation 
 in progress... 
