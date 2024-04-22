@@ -46,10 +46,7 @@ dbt-databricks allowed us to transform the data in the silver layer into a forma
 This transformation process involved cleaning, aggregating, and structuring the data to make it more accessible and useful for stakeholders.
 
 # Dashboard 
-in progress ... 
 
 ![de-proj-az1](https://github.com/maria-fisher/de-proj-az/assets/33252792/5b68e64a-58e6-4b3c-bf2e-f83c4b737d96)
 
 
-# Documentation 
-in progress... 
